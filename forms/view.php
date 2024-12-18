@@ -1,7 +1,7 @@
 <?php
 
 // create a database connection
-$con=mysqli_connect("localhost:3306","root","", "hostel");
+$con=new mysqli("localhost:3306","root","", "hostel");
 
 // check if the connection was successful
 if ($con->connect_error) {
@@ -18,13 +18,19 @@ $result = $con->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    echo "First Name: " . $row["fname"]. " - Last Name: " . $row["lname"]. " - Email: " . $row["email"]. " - Phone: " . $row["num"]. " - Room: " . $row["room"]. "<br>";
+    // Sanitize output to prevent XSS attacks
+    $fname = htmlspecialchars($row["fname"], ENT_QUOTES, 'UTF-8');
+    $lname = htmlspecialchars($row["lname"], ENT_QUOTES, 'UTF-8');
+    $email = htmlspecialchars($row["email"], ENT_QUOTES, 'UTF-8');
+    $num = htmlspecialchars($row["num"], ENT_QUOTES, 'UTF-8');
+    $room = htmlspecialchars($row["room"], ENT_QUOTES, 'UTF-8');
+    //display data
+    echo "First Name: $fname - Last Name: $lname - Email: $email - Phone: $num - Room: $room<br>";
   }
 } else {
-  echo "0 results";
+  echo "No bookings found.";
 }
 
 // close the database connection
 $con->close();
 
-?>

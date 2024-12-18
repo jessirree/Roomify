@@ -22,8 +22,27 @@
   <!-- Link to Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!--Link to Admin JS File -->
- <!-- <script src="assets/js/admin.js"></script> -->
+  <!-- Script to validate password -->
+  <script>
+    function validatePassword() {
+        const password = document.getElementById('pass').value;
+        const error = document.getElementById('error');
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (!regex.test(password)) {
+            error.textContent = "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.";
+            return false;
+        }
+ // Check if passwords match
+ if (password !== confirmPassword) {
+        error.textContent = "Passwords do not match. Please try again.";
+        return false;
+      }
+
+        error.textContent = "";
+        return true;
+    }
+</script>
 
 </head>
 
@@ -40,29 +59,45 @@
                 <div class="col-md-6">
                   <div class="title-box-2">
                     <h5 class="title-left">
-                      Admin Login
+                      Register Admin
                     </h5>
                   </div>
                   <div>
-                    <form method="post" name="form" action="forms/login.php">
+                    <form method="post" name="form" action="forms/adminreg.php" onsubmit="return validatePassword()">
                       <div class="row">
                       </div>
-                      <div class="col-md-12 mb-3">  
+                      <div class="col-md-12 mb-3">
                         <div class="form-group">
                           <input type="text" class="form-control" name="username" id="username" placeholder="Username"
                             required>
                         </div>
                       </div>
-                      <div class="col-md-12 mb-3">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <input type="password" class="form-control" name="password" id="pass" placeholder="Password" required>
+                          <select name="role">
+                            <option value="admin" selected>admin</option>
+                            <option value="user">user</option>
+                          </select>
                         </div>
                       </div>
+                      <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                          <input type="password" class="form-control" name="password" id="pass" placeholder="Password"
+                            required>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                          <input type="password" class="form-control" name="confirm-pass" id="confirm-pass" placeholder="Confirm Password"
+                            required>
+                        </div>
+                      </div>
+                      <div id="error" style="color: red; font-size: 0.9em; margin-bottom: 10px;"></div>
+                      <div class="col-md-12 text-center">
                   </div>
                   <div class="col-md-12 text-center">
-                    <input type="submit" value="Log In" class="button button-a button-big button-rouded"
+                    <input type="submit" value="Register Admin" class="button button-a button-big button-rouded"
                        >
-                    <p><a href="#">Forgot Password</a></p>
                   </div>
                 </div>
               </div>
@@ -79,4 +114,5 @@
   </section>
 </body>
 
+</html>
 </html>

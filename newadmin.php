@@ -1,4 +1,37 @@
-<html>
+<?php
+// Start the session securely
+session_set_cookie_params([
+  'lifetime' => 3600,             // 1-hour session
+  'path' => '/',                  // Available throughout the website
+  'domain' => '',                 // Default to current domain
+  'secure' => true,               // Only send over HTTPS
+  'httponly' => true,             // Prevent JavaScript access
+  'samesite' => 'Strict'          // CSRF protection
+]);
+session_start(); // Start the session
+
+// Check if admin is logged in
+//if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+  if (!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'admin') {
+    header('Location: login.html'); // Redirect to login page if not logged in
+    exit();
+}
+
+// Check if session has expired 
+$timeout_duration = 3600; // Set timeout duration (in seconds)
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+    // If session has expired, destroy the session and redirect to login
+    session_unset();
+    session_destroy();
+    header('Location: login.html');
+    exit();
+}
+
+// Update last activity time
+$_SESSION['last_activity'] = time();
+?>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
